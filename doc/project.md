@@ -23,3 +23,5 @@ A browser-based application for musicians to configure and manage their MIDI equ
 *   **Runtime Environment:** The application logic will be compiled to WebAssembly (Wasm) to ensure high performance and cross-platform consistency.
 *   **Offline Capability:** The application must be fully functional offline, packaged as a Progressive Web App (PWA) or using Service Workers to cache all necessary assets.
 *   **Deliverable:** The final product will be delivered as a containerized web server (e.g., using Docker) that serves the static WebAssembly application bundle. This ensures easy and consistent deployment for end-users.
+*   **Build Pipeline:** The project will use GitHub Actions to automatically build, test, and package the application.
+*   **Containerization:** The final deliverable will be a multi-architecture Docker image, supporting both `amd64` (standard PCs) and `arm64` (e.g., Raspberry Pi, Apple Silicon) platforms.

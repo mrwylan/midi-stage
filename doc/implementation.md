@@ -46,4 +46,5 @@ This document outlines the technical tasks required to implement the MIDI Router
 ### 8. Finalization & Deployment
 1.  **Build Script:** Configure the `package.json` with a script to build the application for production.
 2.  **README:** Write a comprehensive `README.md` explaining the project and how to run it.
-3.  **Deployment:** Deploy the application to a static web host like Netlify or Vercel.
+3.  **CI/CD Pipeline:** Set up a GitHub Actions workflow to build and test the application on every push. The workflow should also be configured to build and push a multi-architecture Docker image (for `amd64` and `arm64`) when a new tag is pushed.
+4.  **Deployment:** Deploy the application to a static web host like Netlify or Vercel.
