@@ -14,11 +14,13 @@ This document provides design principles and guidelines to create a user experie
     *   The default theme should be a dark mode. Bright interfaces can be blinding in low-light environments and distracting to the audience.
     *   Text, active elements, and connection lines must have a high contrast ratio against the background. Use off-white or light gray for text instead of pure white to reduce eye strain.
 
-*   **Introduce a "Performance Mode":**
-    *   This is a critical feature. When enabled, this mode should lock the workspace, disabling all editing capabilities like dragging nodes, deleting connections, or opening settings.
-    *   A large, clear, and deliberate control should be used to toggle between "Edit Mode" and "Performance Mode". This prevents accidental changes mid-show.
+*   **Introduce a "Performance Mode" via the "Stage" Perspective:**
+    *   The "Stage" perspective is the application's dedicated "Performance Mode." It should be fundamentally different from the "Studio" (edit) mode.
+    *   When in the Stage perspective, all editing capabilities (dragging nodes, changing routings, editing properties) must be disabled. The UI should be focused solely on interaction with the pre-configured controls.
+    *   Switching between "Studio" and "Stage" should be a clear and deliberate action.
 
-*   **Touch-First Design:**
+*   **Touch-First Design for Stage Controls:**
+    *   The custom buttons and sliders in the "Stage" perspective are the primary touch targets. They must be large, with ample spacing to prevent accidental taps on a touchscreen device.
     *   Assume the app will be used on a tablet or touchscreen laptop.
     *   All interactive elements (buttons, ports, toggles) must be large enough to be accurately tapped with a finger.
     *   Ensure there is enough space between interactive elements to avoid mis-taps.

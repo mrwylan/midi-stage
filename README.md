@@ -1,13 +1,16 @@
 # MIDI Router Web Application
 
-This project is a browser-based application for musicians to configure and manage their MIDI equipment. It provides a visual interface for routing MIDI signals between devices, filtering messages, and creating complex MIDI processing chains.
+This project is a browser-based application for musicians to configure and manage their MIDI equipment. It provides a powerful, flexible workflow separated into three distinct perspectives: **Setup**, **Studio**, and **Stage**.
+
+Users can define a library of their instruments, visually route MIDI signals in a node-based editor, and create custom touch-friendly control surfaces for live performance.
 
 ## Documentation
 
 The `doc` folder contains detailed information about the project:
 
-*   **[architecture.md](doc/architecture.md):** Outlines the software architecture, including the UI components, state management, and core services.
-*   **[implementation.md](doc/implementation.md):** Provides a detailed plan for implementing the application, from project setup to deployment.
-*   **[project.md](doc/project.md):** Gives a high-level overview of the project, its core features, and technical specifications.
-*   **[specification.md](doc/specification.md):** Defines user stories for device management, visual routing, MIDI filtering/mapping, presets, and real-time monitoring.
-*   **[ui-ux-guidelines.md](doc/ui-ux-guidelines.md):** Describes the UI/UX principles for creating an intuitive and reliable experience for musicians, especially in live performance settings.
+*   **[project.md](doc/project.md):** A high-level overview of the project, its core features, and technical specifications.
+*   **[specification.md](doc/specification.md):** Detailed user stories organized by the three application perspectives (Setup, Studio, Stage).
+*   **[architecture.md](doc/architecture.md):** Outlines the software architecture, including a component diagram and the recommended technical toolchain.
+*   **[implementation.md](doc/implementation.md):** A step-by-step plan for implementing the application, broken down by feature and perspective.
+*   **[ui-ux-guidelines.md](doc/ui-ux-guidelines.md):** Describes the UI/UX principles for creating an intuitive and reliable experience, with a focus on live performance needs.
+

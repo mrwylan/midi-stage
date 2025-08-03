@@ -6,12 +6,13 @@ A browser-based application for musicians to configure and manage their MIDI equ
 
 ## Core Features
 
-*   **Visual Routing Interface:** A drag-and-drop interface to connect MIDI inputs and outputs of various devices.
-*   **Device Management:** Add, remove, and configure MIDI devices connected to the system. The application will use the Web MIDI API to detect and interact with connected hardware.
-*   **MIDI Message Filtering:** Allow users to filter MIDI messages based on type (Note On/Off, CC, Program Change, etc.) and channel.
-*   **MIDI Message Mapping:** Remap MIDI messages from one type to another (e.g., a CC message to a Program Change).
-*   **Preset Management:** Save and load different routing configurations as presets for different studio or stage scenarios.
-*   **Real-time Monitoring:** A real-time log of MIDI messages flowing through the system for debugging and monitoring.
+The application is designed around three distinct perspectives for a seamless workflow from preparation to performance:
+
+*   **Setup Perspective:** Define a personal library of MIDI devices and map human-readable names to MIDI CC messages (e.g., "Filter Cutoff" -> CC 74).
+*   **Studio Perspective:** A visual, node-based interface for routing MIDI, applying filters, and transforming messages. This is the core environment for designing complex interactions.
+*   **Stage Perspective:** A simplified, touch-friendly view for live performance. It provides large, customizable buttons and sliders to interact with presets and send MIDI commands without the risk of accidental edits.
+*   **Preset Management:** Save and load complete configurations, including device setups, routings, and custom stage controls.
+*   **Real-time Monitoring:** A detailed log of MIDI messages for debugging and analysis.
 
 ## Technical Specifications
 

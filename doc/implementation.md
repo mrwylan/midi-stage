@@ -1,50 +1,51 @@
 # Implementation Plan: MIDI Router Web Application
 
-This document outlines the technical tasks required to implement the MIDI Router application, broken down by feature.
+This document outlines the technical tasks required to implement the MIDI Router application, broken down by the core user perspectives.
 
 ### 1. Project Setup & Foundation
 1.  **Initialize Project:** Set up a new project using Vite with the React + TypeScript template.
-2.  **Install Dependencies:** Add necessary libraries for state management (e.g., Zustand or Redux Toolkit) and UI components (e.g., a component library like MUI or React-Bootstrap).
-3.  **Project Structure:** Organize the codebase with folders for components, services, hooks, and styles.
-4.  **Linter/Formatter:** Configure ESLint and Prettier for code quality and consistency.
+2.  **Install Dependencies:**
+    *   `react`, `react-dom`
+    *   `zustand` for state management.
+    *   `@mui/material`, `@emotion/react`, `@emotion/styled` for UI components.
+    *   `react-flow` for the routing canvas.
+3.  **Project Structure:** Organize the codebase into folders for `components`, `services`, `hooks`, `state`, and `views` (for Setup, Studio, Stage).
+4.  **Linter/Formatter:** Configure ESLint and Prettier.
+5.  **Core MIDI Service:** Create a `MidiService.ts` to encapsulate all Web MIDI API interactions (device detection, message handling).
 
-### 2. Core MIDI Integration
-1.  **MIDI Service:** Create a `MidiService.ts` to encapsulate all interactions with the Web MIDI API.
-2.  **Device Detection:** Implement a function within the service to request MIDI access and retrieve a list of available input and output devices.
-3.  **State Management:** Store the list of connected devices in a global state management solution.
-4.  **Message Handling:** Create listeners for incoming MIDI messages and a function to send outgoing MIDI messages.
+### 2. The "Setup" Perspective
+1.  **State:** Extend the Zustand store to manage a "Device Library," where each device has a name, color, and a map of CC numbers to string labels.
+2.  **Device Library UI:** Create a component to list, add, and edit devices in the library.
+3.  **CC Mapper UI:** For each device, create a UI to define and edit the named CC messages.
 
-### 3. UI: Device Management
-1.  **Device List Component:** Create a React component to display the list of available MIDI inputs and outputs.
-2.  **Device Representation:** Create a data model for a "Device" in the application, including its ID, name, and a user-defined alias.
-3.  **Add/Remove Devices:** Implement UI for users to "add" a detected MIDI device to the workspace, making it available for routing.
+### 3. The "Studio" Perspective
+1.  **State:** Model the state for the routing canvas, including nodes (instances of library devices), their positions, and the connections between them.
+2.  **Routing Canvas UI:**
+    *   Implement the main canvas using React Flow.
+    *   Create a sidebar or panel to drag devices from the Device Library onto the canvas.
+    *   Customize nodes to display device names and I/O ports.
+3.  **Connection & Properties UI:**
+    *   Implement the logic for connecting output ports to input ports.
+    *   Create a modal or sidebar to edit the properties of a connection (e.g., channel filtering, message mapping).
+4.  **Routing Engine:** Implement the core logic that listens to MIDI input and forwards it according to the connections and their defined properties.
 
-### 4. UI: Visual Routing Canvas
-1.  **Canvas Component:** Create a main component to serve as the visual workspace.
-2.  **Draggable Device Nodes:** Implement a `DeviceNode` component that can be dragged and dropped onto the canvas.
-3.  **Input/Output Ports:** Each `DeviceNode` should have visual ports representing its MIDI inputs and outputs.
-4.  **Connection Logic:** Implement the ability to draw a line (a "cable") between an output port of one node and an input port of another.
-5.  **State for Connections:** Store the connections (e.g., `sourceDeviceId`, `targetDeviceId`) in the global state.
+### 4. The "Stage" Perspective
+1.  **State:** Design the state for custom control surfaces, including a list of pages, and for each page, a grid of controls (buttons, sliders) with their associated MIDI actions.
+2.  **Control Surface UI:**
+    *   Create a view that displays the configured buttons and sliders for the active preset.
+    *   Ensure controls are large and touch-friendly, as per the UI/UX guidelines.
+3.  **Control Interaction:**
+    *   Implement logic for sliders to send corresponding CC messages.
+    *   Implement logic for buttons to send configured messages (Program Change, Note On/Off, etc.).
+4.  **"Performance Mode":** The Stage perspective should inherently be a "performance mode," with no access to the underlying routing or device library.
 
-### 5. MIDI Processing Engine
-1.  **Routing Logic:** Create a core processing function that listens for MIDI events from "added" devices. When a message is received, it should check the connection state and forward the message to all connected target devices.
-2.  **Filter Implementation:** For each connection, allow the user to configure filters (e.g., "block all CC messages on channel 5"). Implement this filtering logic within the core processing function.
-3.  **Mapping Implementation:** For each connection, allow the user to define mappings (e.g., "change Note On on channel 1 to Note On on channel 2"). Implement this mapping logic.
-4.  **UI for Filters/Mappings:** Create a modal or sidebar form that appears when a user clicks on a connection "cable", allowing them to configure these settings.
+### 5. Preset & System Management
+1.  **State Serialization:** Create functions to serialize the entire relevant state (Device Library, Studio setup, Stage setup) into a single JSON object for presets.
+2.  **Save/Load UI:** Implement UI to save the current state as a named preset and to load presets from a list.
+3.  **Real-time Monitoring:** Create a MIDI log component that can be accessed from the Studio and Stage views for debugging.
 
-### 6. Preset Management
-1.  **State Serialization:** Create a function to serialize the entire application state (added devices, their positions on the canvas, connections, filters, mappings) into a JSON object.
-2.  **State Deserialization:** Create a function to parse a JSON object and restore the application state from it.
-3.  **Save/Load UI:** Implement buttons to allow users to save the current state as a `.json` file and to load a state from a `.json` file.
-4.  **Local Storage (Optional):** Implement a feature to save multiple presets by name into the browser's local storage.
-
-### 7. Real-time Monitoring
-1.  **Logging Service:** Create a service that can be called from the MIDI processing engine to log events.
-2.  **Log Component:** Create a UI component that displays the logged messages in a scrollable, formatted view.
-3.  **Log Filtering:** Add UI controls to the log component to filter messages by device, message type, or channel.
-
-### 8. Finalization & Deployment
+### 6. Finalization & Deployment
 1.  **Build Script:** Configure the `package.json` with a script to build the application for production.
 2.  **README:** Write a comprehensive `README.md` explaining the project and how to run it.
-3.  **CI/CD Pipeline:** Set up a GitHub Actions workflow to build and test the application on every push. The workflow should also be configured to build and push a multi-architecture Docker image (for `amd64` and `arm64`) when a new tag is pushed.
+3.  **CI/CD Pipeline:** Set up a GitHub Actions workflow to build, test, and push a multi-architecture Docker image (`amd64`/`arm64`) on new tags.
 4.  **Deployment:** Deploy the application to a static web host like Netlify or Vercel.

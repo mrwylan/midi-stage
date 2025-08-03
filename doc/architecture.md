@@ -1,19 +1,38 @@
 # Software Architecture
 
-This document outlines the software architecture for the MIDI Router Web Application using a Mermaid diagram.
+This document outlines the software architecture for the MIDI Router Web Application, designed around three core user perspectives: Setup, Studio, and Stage.
 
 ```mermaid
 graph TD
-    subgraph "User Interface (React Components)"
-        A[Device List]
-        B[Routing Canvas]
-        C[Properties Editor]
-        D[MIDI Monitor]
+    subgraph "Application Shell & Main Views"
+        V1[Setup View]
+        V2[Studio View]
+        V3[Stage View]
     end
 
-    subgraph "State Management (e.g., Zustand)"
+    subgraph "UI Components"
+        subgraph "Setup Components"
+            S1[Device Library]
+            S2[CC Mapper]
+        end
+        subgraph "Studio Components"
+            St1[Routing Canvas]
+            St2[Properties Editor]
+        end
+        subgraph "Stage Components"
+            Sg1[Preset Browser]
+            Sg2[Custom Control Surface]
+            Sg3[Buttons & Sliders]
+        end
+        Shared[MIDI Monitor]
+    end
+
+    subgraph "State Management (Zustand)"
         E{Application State}
-        E -- Stores --> F[Device List, Connections, Mappings]
+        E -- Stores --> DLib[Device Library, CC Maps]
+        E -- Stores --> Rout[Connections, Mappings]
+        E -- Stores --> Presets[Saved Presets]
+        E -- Stores --> StageUI[Stage UI Config]
     end
 
     subgraph "Core Services"
@@ -21,7 +40,8 @@ graph TD
         I[RoutingEngine]
     end
 
-    A & B & C & D -- "Read/Write" --> E
+    V1 & V2 & V3 -- "Render" --> S1 & S2 & St1 & St2 & Sg1 & Sg2 & Sg3 & Shared
+    S1 & S2 & St1 & St2 & Sg1 & Sg2 & Sg3 & Shared -- "Read/Write" --> E
 
     G -- "Dispatches updates to" --> E
     I -- "Reads configuration from" --> E
@@ -32,18 +52,23 @@ graph TD
 
 ## Architecture Components
 
-*   **User Interface (React Components):**
-    *   **Device List:** Displays available MIDI devices.
-    *   **Routing Canvas:** The main visual workspace for connecting device nodes.
-    *   **Properties Editor:** A panel or modal to edit the properties of a connection (filters, mappings).
-    *   **MIDI Monitor:** A component to display real-time MIDI message logs.
+*   **Main Views:** The application is split into three main views, each corresponding to a specific workflow.
+    *   **Setup View:** Manages the device library and their MIDI CC definitions.
+    *   **Studio View:** The primary workspace for visual routing and MIDI processing.
+    *   **Stage View:** A simplified interface for live performance with custom controls.
 
-*   **State Management (e.g., Zustand):**
-    *   A centralized store holding the entire application state, including the list of devices, their connections, and any filtering or mapping rules. The UI is a reactive representation of this state.
+*   **UI Components:**
+    *   **Setup:** `Device Library` for managing instrument definitions and a `CC Mapper` for naming CC messages.
+    *   **Studio:** The `Routing Canvas` (using React Flow) for visual connections and a `Properties Editor` for filters/mappings.
+    *   **Stage:** A `Preset Browser` for loading setups and a `Custom Control Surface` populated with interactive `Buttons & Sliders`.
+    *   **Shared:** A `MIDI Monitor` is available for debugging across relevant views.
+
+*   **State Management (Zustand):**
+    *   A single, centralized store holds the entire application state, which is now organized to reflect the new features: the `Device Library`, routing `Connections`, saved `Presets`, and `Stage UI` configurations.
 
 *   **Core Services:**
-    *   **MidiService:** A singleton service that encapsulates all communication with the browser's Web MIDI API. It is responsible for detecting devices and handling raw MIDI input/output.
-    *   **RoutingEngine:** The brain of the application. It listens for changes in the application state (like new connections) and processes incoming MIDI messages from the `MidiService` according to the routing, filtering, and mapping rules defined in the state.
+    *   **MidiService:** Encapsulates all communication with the Web MIDI API.
+    *   **RoutingEngine:** Processes incoming MIDI messages based on the active preset's routing, filtering, and mapping rules. It also processes UI events from the Stage view to generate outgoing MIDI.
 
 ## Recommended Toolchain
 
